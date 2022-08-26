@@ -139,7 +139,7 @@ const TitleInput = styled.TextInput``;
 const InputText = styled.TextInput`
   width: 100%;
   height: 350px;
-  background-color: aliceblue;
+  background-color: #d9d9d9;
 `;
 
 const ResultView = styled.View`
