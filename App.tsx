@@ -1,23 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import TextInputTest from './src/screens/TextView';
+
+import styled from 'styled-components/native';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <View> */}
+    <Container>
       <StatusBar style='auto' />
       <TextInputTest></TextInputTest>
-    </View>
+    </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#F5E960',
-  },
-});
+const Container = styled.View`
+  flex: 1;
+  align-items: center;
+  padding-top: 60px;
+`;

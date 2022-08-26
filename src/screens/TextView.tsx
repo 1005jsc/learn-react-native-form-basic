@@ -1,74 +1,140 @@
-import { useEffect, useState } from 'react';
-import { useRef } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { Platform, Text } from 'react-native';
 import styled from 'styled-components/native';
 
+type TextBundleType = {
+  text: string;
+  textLength: number;
+};
+
+const initialTextBundle = { text: '', textLength: 0 };
+
 const TextInputTest = () => {
-  const [finalText, setFinalText] = useState<string | null>(null);
-  const [text, setText] = useState<string | null>(null);
+  const [, setFinalText] = useState<string | null>(null);
+  const [textBundle, setTextBundle] = useState<TextBundleType>({
+    ...initialTextBundle,
+  });
 
   const handleTextChange = (yo: string) => {
-    // console.log(yo);
-    // setText((yo) => yo);
-    setText(yo);
+    setTextBundle({
+      text: yo,
+      textLength: yo.length,
+    });
   };
 
   const handleSubmit = () => {
-    setFinalText(text);
-    setText('');
+    setFinalText(textBundle.text);
+    setTextBundle({ ...initialTextBundle });
   };
-
-  useEffect(() => {
-    // console.log(`hi ${text}`);
-  }, [text]);
 
   return (
     <>
-      <Container>
-        <Text>sdfsdf</Text>
+      <Container2 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <Container>
+          <TitleView>
+            <SampleButtonView />
+            <Text>프랑스여행</Text>
+            <SampleButtonView />
+          </TitleView>
+          <TitleView>
+            <TitleInput placeholder='제목을 입력해주세요.' />
+            <ButtonsWrapper>
+              <SampleButtonView />
+              <SampleButtonView />
+            </ButtonsWrapper>
+          </TitleView>
+          <InputTextContainer>
+            <InputText
+              onChangeText={handleTextChange}
+              placeholder='hello I am jaesin'
+              maxLength={100}
+              multiline={true}
+              value={textBundle.text}
+              onEndEditing={() => console.log('onEndEditing')}
+              keyboardType='default'
+              onFocus={() => console.log('onFocus')}
+              onKeyPress={(e: any) => {
+                if (e.nativeEvent.key == 'Enter') {
+                  handleSubmit();
+                }
+              }}
+              textAlignVertical='top'
+            ></InputText>
+            <AbsoluteTextWrapper>
+              <AbsoluteText1>{textBundle.textLength}</AbsoluteText1>
+              <AbsoluteText2>/</AbsoluteText2>
+              <AbsoluteText1>1000</AbsoluteText1>
+            </AbsoluteTextWrapper>
+          </InputTextContainer>
 
-        {/* <InputContainer> */}
-        <InputText
-          onChangeText={handleTextChange}
-          placeholder='hello I am jaesin'
-          maxLength={1000}
-          multiline={true}
-          value={text}
-          onEndEditing={() => console.log('onEndEditing')}
-          keyboardType='default'
-          onFocus={() => console.log('onFocus')}
-          onKeyPress={(e: any) => {
-            if (e.nativeEvent.key == 'Enter') {
-              handleSubmit();
-            }
-          }}
-          //   textAlign='center'
-          textAlignVertical='top'
-        ></InputText>
-        {/* </InputContainer> */}
-        <Button title='submit' onPress={handleSubmit}></Button>
-        <ResultView>
-          <ResultText>{finalText}</ResultText>
-        </ResultView>
-      </Container>
+          {/* <Button title='submit' onPress={handleSubmit}></Button>
+          <ResultView>
+            <ResultText>{finalText}</ResultText>
+          </ResultView> */}
+        </Container>
+      </Container2>
     </>
   );
 };
 
 export default TextInputTest;
 
-const Container = styled.View`
+const Container2 = styled.KeyboardAvoidingView`
   width: 100%;
-  /* height: 200px; */
-  /* flex-flow: row; */
   align-items: center;
-  border: 1px solid black;
 `;
 
-const InputContainer = styled.View`
+const InputTextContainer = styled.View`
   width: 100%;
-  height: 300px;
+  position: relative;
 `;
+
+const AbsoluteText1 = styled.Text`
+  font-size: 10px;
+  color: #8b8b8b;
+`;
+
+const AbsoluteText2 = styled.Text`
+  font-size: 10px;
+
+  color: #c1c1c1;
+`;
+
+const AbsoluteTextWrapper = styled.View`
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+  flex-flow: row;
+`;
+
+const Container = styled.View`
+  width: 100%;
+  align-items: center;
+`;
+
+const TitleView = styled.View`
+  width: 100%;
+  height: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+const ButtonsWrapper = styled.View`
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SampleButtonView = styled.View`
+  width: 20px;
+  height: 20px;
+  background-color: blue;
+  margin: 4px;
+`;
+
+const TitleInput = styled.TextInput``;
 
 const InputText = styled.TextInput`
   width: 100%;
